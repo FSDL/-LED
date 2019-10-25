@@ -1,0 +1,41 @@
+volatile boolean x;
+volatile boolean y;
+volatile byte click;
+volatile boolean lastState;
+volatile boolean toggle;
+
+void setup(){
+  pinMode(3, OUTPUT);
+  digitalWrite(3,LOW);
+  pinMode(9, INPUT_PULLUP);
+  lastState = digitalRead(9);
+  lastState = 0;
+  toggle = 0;
+  click = 0;
+  x = 0;
+  y = 0;
+  Serial.begin(9600);
+  pinMode(0, OUTPUT);
+}
+
+void loop(){
+  Serial.println(digitalRead(9));
+  x = digitalRead(9);
+  if (x != lastState) {
+    delay(20);
+    y = digitalRead(9);
+    if (y == x) {
+      lastState = x;
+      click = click + 1;
+
+    }
+
+  }
+  if (click == 2) {
+    click = 0;
+    toggle = !toggle;
+    digitalWrite(0,toggle);
+
+  }
+
+}
